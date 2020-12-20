@@ -1,0 +1,21 @@
+entryPoints:
+  web:
+    address: ":80"
+
+providers:
+  file:
+    directory: "/etc/traefik-provider"
+    watch: true
+
+api:
+  insecure: true
+  dashboard: true
+  debug: true
+
+log:
+  level: debug
+  filePath: "/log/traefik.log"
+
+accessLog:
+  filePath: "/log/access.log"
+  bufferingSize: 100

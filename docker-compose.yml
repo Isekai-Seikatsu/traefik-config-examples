@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  reverse-proxy:
+    image: traefik
+    ports:
+      - "8080:8080"
+      - "80:80"
+ 
+    volumes:
+      - "./config/traefik:/etc/traefik:ro"
+      - "./config/provider:/etc/traefik-provider:ro"
+      - "./log:/log"
+
+  flask-api:
+    build: ./flask-api
+    image: demo-app
+    

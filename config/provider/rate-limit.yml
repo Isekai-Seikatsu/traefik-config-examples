@@ -1,0 +1,30 @@
+http:
+  routers:
+    home-route:
+      entryPoints:
+        - web
+      rule: "Path(`/`) || Path(`/headers`)"
+      service: flask-api-serv
+
+    {{range $i, $e := until 2 }}
+    rate-limit-route-{{$e}}:
+      entryPoints:
+        - web
+      rule: "Path(`/rate-limit-{{$e}}`)"
+      middlewares:
+        - rate-limit-mid
+      service: flask-api-serv
+    {{end}}
+
+  middlewares:
+    rate-limit-mid:
+      rateLimit:
+        average: 1
+        period: 10
+        burst: 1
+
+  services:
+    flask-api-serv:
+      loadBalancer:
+        servers:
+          - url: "http://flask-api"
